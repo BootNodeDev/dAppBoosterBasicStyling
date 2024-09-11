@@ -7,6 +7,7 @@ export const Footer: FC = ({ ...restProps }) => {
   return (
     <Center
       alignItems="center"
+      as="footer"
       backgroundColor="var(--theme-footer-background-color)"
       height="92px"
       justifyContent="center"
