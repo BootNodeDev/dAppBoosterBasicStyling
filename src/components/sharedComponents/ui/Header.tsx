@@ -1,89 +1,42 @@
 import { type FC, type HTMLAttributes } from 'react'
-import styled, { css } from 'styled-components'
 
-import {
-  InnerContainer,
-  Header as BaseHeader,
-  Logo as BaseLogo,
-  ContainerPadding,
-  SwitchThemeButton,
-  breakpointMediaQuery,
-} from '@bootnodedev/db-ui-toolkit'
+import { Logo as BaseLogo, SwitchThemeButton } from '@bootnodedev/db-ui-toolkit'
+import { Flex, Box, chakra } from '@chakra-ui/react'
 import { Link } from '@tanstack/react-router'
 import { useTheme } from 'next-themes'
 
 import { ConnectWalletButton } from '@/src/providers/Web3Provider'
 
-const Wrapper = styled(BaseHeader)`
-  margin-bottom: calc(var(--base-gap-xl) * 2);
-  padding-top: var(--base-common-padding-xl);
-  position: relative;
-  z-index: 10;
-
-  ${breakpointMediaQuery(
-    'desktopStart',
-    css`
-      height: var(--base-header-height);
-    `,
-  )}
-`
-
-const Inner = styled(InnerContainer)`
-  align-items: center;
-  height: 100%;
-  justify-content: space-between;
-
-  ${ContainerPadding}
-`
-
-const Start = styled.div`
-  flex: 1;
-`
-
-const HomeLink = styled(Link)`
-  display: none;
-
-  &:active {
-    opacity: 0.7;
-  }
-
-  ${breakpointMediaQuery(
-    'tabletPortraitStart',
-    css`
-      display: flex;
-    `,
-  )}
-`
-
-const Logo = styled(BaseLogo)`
-  min-width: 140px;
-`
-
-const End = styled.div`
-  align-items: center;
-  column-gap: calc(var(--base-gap));
-  display: flex;
-  flex: 1;
-  height: 100%;
-  justify-content: flex-end;
-`
+const Logo = chakra(BaseLogo)
 
 export const Header: FC<HTMLAttributes<HTMLElement>> = ({ ...restProps }) => {
   const { setTheme, theme } = useTheme()
 
   return (
-    <Wrapper {...restProps}>
-      <Inner>
-        <Start>
-          <HomeLink to="/">
-            <Logo />
-          </HomeLink>
-        </Start>
-        <End>
+    <Flex
+      as="header"
+      mb="calc(var(--base-gap-xl) * 2)"
+      position="relative"
+      pt="var(--base-common-padding-xl)"
+      zIndex="10"
+      {...restProps}
+    >
+      <Flex alignItems="center" justifyContent="space-between" pl={4} pr={4} width="100%">
+        <Box flex="1">
+          <Link to="/">
+            <Logo minWidth="140px" />
+          </Link>
+        </Box>
+        <Flex
+          alignItems="center"
+          columnGap="calc(var(--base-gap))"
+          flex="1"
+          justifyContent="flex-end"
+        >
           <SwitchThemeButton onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')} />
           <ConnectWalletButton />
-        </End>
-      </Inner>
-    </Wrapper>
+        </Flex>
+      </Flex>
+    </Flex>
   )
 }
